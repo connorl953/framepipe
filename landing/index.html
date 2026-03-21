@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Agentic Video Editor - The first video editor designed for AI agents. 18 MCP tools. Zero GUI required.">
+    <meta name="theme-color" content="#0f172a">
+    <title>Agentic Video Editor - Video Editing Built for AI Agents</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1a2847;
+            --bg-tertiary: #243555;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #1e40af;
+            --accent-hover: #60a5fa;
+            --border-color: #334155;
+            --success: #10b981;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", system-ui, sans-serif;
+            --font-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            letter-spacing: -0.5px;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--accent-primary);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 2rem 4rem;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        h1 .highlight {
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-hover) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subheading {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-sans);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: white;
+            border: 1px solid var(--accent-primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent-primary);
+            border: 1px solid var(--accent-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 6rem 2rem;
+        }
+
+        section.dark {
+            background-color: var(--bg-secondary);
+        }
+
+        h2 {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Why Section */
+        .why-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .why-content p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Tools Grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .tool-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .tool-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tool-card:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .tool-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-primary);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .tool-card h3 {
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .tool-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* How It Works */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .step {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .step.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1.5rem;
+        }
+
+        .step h3 {
+            margin-bottom: 0.75rem;
+        }
+
+        .step p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Code Example */
+        .code-container {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            margin-top: 2rem;
+            overflow-x: auto;
+            max-width: 100%;
+        }
+
+        code {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        code .key {
+            color: var(--accent-primary);
+        }
+
+        code .string {
+            color: var(--success);
+        }
+
+        code .value {
+            color: #f59e0b;
+        }
+
+        /* Pricing */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .pricing-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .pricing-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--accent-primary);
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            transform: scale(1.05);
+        }
+
+        .pricing-card.featured .pricing-badge {
+            color: var(--accent-primary);
+        }
+
+        .pricing-badge {
+            display: inline-block;
+            color: var(--text-tertiary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.75rem;
+        }
+
+        .pricing-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-price {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .pricing-price-desc {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+
+        .pricing-features li {
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .pricing-features li::before {
+            content: '✓ ';
+            color: var(--success);
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .pricing-card .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-tagline {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-primary);
+        }
+
+        .footer-copyright {
+            color: var(--text-tertiary);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+            }
+
+            nav .container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            section {
+                padding: 4rem 1.5rem;
+            }
+
+            .hero {
+                min-height: 80vh;
+                padding: 5rem 1.5rem 3rem;
+            }
+
+            .cta-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                gap: 1rem;
+            }
+
+            code {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo">Agentic Video Editor</div>
+            <div style="display: flex; gap: 2rem;">
+                <a href="#why">Why</a>
+                <a href="#tools">Tools</a>
+                <a href="#how">How it works</a>
+                <a href="#pricing">Pricing</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">Built for AI agents • Discovered through MCP registries</div>
+            <h1>Video editing built for <span class="highlight">AI agents</span></h1>
+            <p class="subheading">The first video editor designed for LLM consumption. 18 MCP tools. Zero GUI required.</p>
+            <div class="cta-group">
+                <a href="#" class="btn btn-primary">View on npm</a>
+                <a href="#" class="btn btn-secondary">Read the docs</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Section -->
+    <section id="why">
+        <div class="container">
+            <h2>Why this exists</h2>
+            <div class="why-content">
+                <p>
+                    Video editing remains fundamentally unchanged since the GUI era. Humans manually scrub timelines, tweak keyframes, and export presets. But AI agents don't have hands. They don't see pixels. They think in code.
+                </p>
+                <p>
+                    Agentic Video Editor treats your LLM as the customer. Not the human. Install once, configure via JSON, then let your agent make creative decisions: trim scenes, overlay text, detect silence, export optimized feeds — all through structured MCP tools designed for machine consumption.
+                </p>
+                <p>
+                    This is video editing for the AI age.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section id="tools" class="dark">
+        <div class="container">
+            <h2>18 tools for every editing task</h2>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-icon">📊</div>
+                    <h3>inspect_video</h3>
+                    <p>Understand any video through structured metadata. Resolution, duration, codec, framerate, audio tracks—everything your agent needs to make informed decisions.</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">✂️</div>
+                    <h3>trim</h3>
+                    <p>Cut to any time range with HH:MM:SS or seconds notation. Precise, deterministic, repeatable. Extract scenes, remove intros, create highlights.</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">📝</div>
+                    <h3>add_text</h3>
+                    <p>Overlay text at precise positions and time ranges. Position by pixel coordinates, set duration, choose fonts. Build captions, titles, watermarks programmatically.</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">💾</div>
+                    <h3>export_video</h3>
+                    <p>One-command export with YouTube, Instagram, TikTok presets. Automatic aspect ratio conversion, bitrate optimization, codec selection. No manual format juggling.</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🔇</div>
+                    <h3>detect_silence</h3>
+                    <p>Find natural cut points automatically. AI-powered silence detection surfaces where to cut without manual listening. Perfect for podcast editing, interview cleanup.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how">
+        <div class="container">
+            <h2>How it works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Install</h3>
+                    <p>Add via npm. Supports local files and cloud storage (S3, GCS). Zero dependencies beyond Node.js.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Configure MCP</h3>
+                    <p>Define the server in your Claude Desktop config or MCP client. Point to your video library. Set API keys if using cloud.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Your agent edits</h3>
+                    <p>Claude or any LLM calls tools natively. "Trim this to 30 seconds," "add captions," "export for TikTok." Your agent handles the rest.</p>
+                </div>
+            </div>
+
+            <div class="code-container">
+                <code>
+<span class="key">{</span><br>
+&nbsp;&nbsp;<span class="key">"mcpServers"</span>: <span class="key">{</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"agentic-video-editor"</span>: <span class="key">{</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"command"</span>: <span class="string">"npx"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"args"</span>: <span class="key">[</span><span class="string">"agentic-video-editor"</span><span class="key">]</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"env"</span>: <span class="key">{</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"VIDEO_PATH"</span>: <span class="string">"/path/to/videos"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"EXPORT_PATH"</span>: <span class="string">"/path/to/exports"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">}</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">}</span><br>
+&nbsp;&nbsp;<span class="key">}</span><br>
+<span class="key">}</span>
+                </code>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="dark">
+        <div class="container">
+            <h2>Pricing aligned with AI infrastructure</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-badge">Free</div>
+                    <div class="pricing-name">Free Tier</div>
+                    <div class="pricing-price">$0</div>
+                    <div class="pricing-price-desc">100 minutes/month</div>
+                    <ul class="pricing-features">
+                        <li>100 min/month processing</li>
+                        <li>18 core tools</li>
+                        <li>Local or cloud storage</li>
+                        <li>Community support</li>
+                    </ul>
+                    <button class="btn btn-secondary">Get started</button>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-badge">Popular</div>
+                    <div class="pricing-name">Growth</div>
+                    <div class="pricing-price">$0.08</div>
+                    <div class="pricing-price-desc">per minute over 100</div>
+                    <ul class="pricing-features">
+                        <li>Unlimited minutes</li>
+                        <li>18 tools + priority</li>
+                        <li>Multi-region support</li>
+                        <li>Email support</li>
+                        <li>API analytics</li>
+                    </ul>
+                    <button class="btn btn-primary">Choose plan</button>
+                </div>
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">Best Value</div>
+                    <div class="pricing-name">Pro</div>
+                    <div class="pricing-price">$0.05</div>
+                    <div class="pricing-price-desc">per minute (volume discount)</div>
+                    <ul class="pricing-features">
+                        <li>Unlimited minutes</li>
+                        <li>18 tools + custom extensions</li>
+                        <li>Global CDN</li>
+                        <li>Slack support</li>
+                        <li>Usage dashboard</li>
+                        <li>SLA guarantee</li>
+                    </ul>
+                    <button class="btn btn-primary">Choose plan</button>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-badge">Enterprise</div>
+                    <div class="pricing-name">Enterprise</div>
+                    <div class="pricing-price">Custom</div>
+                    <div class="pricing-price-desc">volume and compliance pricing</div>
+                    <ul class="pricing-features">
+                        <li>Unlimited everything</li>
+                        <li>Custom tool development</li>
+                        <li>Dedicated support</li>
+                        <li>On-premise deployment</li>
+                        <li>SOC 2 compliance</li>
+                    </ul>
+                    <button class="btn btn-secondary">Contact sales</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p class="footer-tagline">Built by AI, for AI</p>
+            <div class="footer-links">
+                <a href="#">GitHub</a>
+                <a href="#">Documentation</a>
+                <a href="#">Status</a>
+                <a href="#">Blog</a>
+            </div>
+            <p class="footer-copyright">© 2026 Agentic Video Editor. Discovered through MCP registries.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll behavior for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe tool cards, steps, and pricing cards
+        document.querySelectorAll('.tool-card, .step, .pricing-card').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Stagger animation delays
+        document.querySelectorAll('.tool-card').forEach((el, index) => {
+            el.style.transitionDelay = `${index * 0.1}s`;
+        });
+
+        document.querySelectorAll('.step').forEach((el, index) => {
+            el.style.transitionDelay = `${index * 0.1}s`;
+        });
+
+        document.querySelectorAll('.pricing-card').forEach((el, index) => {
+            el.style.transitionDelay = `${index * 0.1}s`;
+        });
+
+        // Update active nav link on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('nav a[href^="#"]');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.style.color = '';
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.style.color = 'var(--accent-primary)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

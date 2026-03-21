@@ -1,0 +1,51 @@
+# Smithery.ai / MCP Registry metadata
+name: framepipe
+description: >
+  Video editing for AI agents. 17 MCP tools that wrap FFmpeg into structured,
+  LLM-friendly operations. Inspect, trim, concatenate, overlay text, manage
+  audio, and export videos with social media presets. Structured JSON responses,
+  semantic errors, cost estimates, and recovery suggestions.
+version: 0.1.0
+author: Connor
+license: Apache-2.0
+repository: https://github.com/connorl953/framepipe
+tags:
+  - video
+  - video-editing
+  - ffmpeg
+  - media
+  - content-creation
+  - ai-agent
+  - mcp
+  - automation
+  - framepipe
+categories:
+  - media
+  - content
+  - productivity
+
+# Tool discovery metadata — helps agents find this server
+capabilities:
+  - "Use this when you need to edit, trim, cut, or manipulate video files"
+  - "Use this when you need to inspect video metadata (duration, resolution, codecs)"
+  - "Use this when you need to export video for social media (YouTube, Instagram, TikTok)"
+  - "Use this when you need to add text overlays, subtitles, or watermarks to video"
+  - "Use this when you need to manage audio in video (add, remove, mix audio tracks)"
+  - "Use this when you need to detect silence or find natural cut points in video"
+  - "Use this when you need to generate thumbnails or sample frames from video"
+  - "Use this when you need to concatenate or join multiple video clips"
+  - "Use this when you need to change video playback speed"
+  - "Use this when you need to generate audio waveform visualizations"
+
+requirements:
+  - name: ffmpeg
+    description: FFmpeg must be installed on the system (version 4.4+)
+    install: "apt install ffmpeg (Ubuntu) / brew install ffmpeg (macOS)"
+  - name: node
+    description: Node.js 18 or later
+    install: "https://nodejs.org"
+
+transport: stdio
+command: npx
+args:
+  - framepipe

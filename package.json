@@ -1,0 +1,28 @@
+{
+  "name": "framepipe",
+  "version": "0.1.0",
+  "description": "Video editing for AI agents. 17 MCP tools that wrap FFmpeg into structured, LLM-friendly operations.",
+  "type": "module",
+  "main": "dist/server.js",
+  "bin": {
+    "framepipe": "dist/server.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "tsx src/server.ts",
+    "test": "tsx src/test.ts"
+  },
+  "keywords": ["mcp", "video-editing", "ai-agent", "ffmpeg", "llm"],
+  "author": "Connor",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
