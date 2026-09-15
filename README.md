@@ -214,7 +214,7 @@ Error:
 }
 ```
 
-Error codes are semantic (`FILE_NOT_FOUND`, `END_TIME_OUT_OF_RANGE`, `NO_SUBTITLES`, `INSPECT_FAILED`) so the agent can branch on them programmatically instead of parsing error strings.
+Error codes are semantic (`END_TIME_OUT_OF_RANGE`, `NO_SUBTITLES`, `INVALID_PRESET`, `INSPECT_FAILED`) so the agent can branch on them programmatically instead of parsing error strings. There are 24 of them.
 
 ## Architecture
 

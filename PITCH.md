@@ -34,8 +34,8 @@ file size, codec, and a cost estimate. The agent knows what it produced without 
 file afterward.
 
 **Semantic errors, not stderr.** Failures return a code the agent can switch on —
-`END_TIME_OUT_OF_RANGE`, `FILE_NOT_FOUND`, `NO_SUBTITLES` — with a message and a suggested
-next step. Twenty-three distinct codes, so branching on the failure is a lookup rather than
+`END_TIME_OUT_OF_RANGE`, `INVALID_PRESET`, `NO_SUBTITLES` — with a message and a suggested
+next step. Twenty-four distinct codes, so branching on the failure is a lookup rather than
 a regex over log output.
 
 ## What that buys
