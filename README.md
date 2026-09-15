@@ -18,21 +18,27 @@ FramePipe is an [MCP](https://modelcontextprotocol.io) server that wraps FFmpeg 
 
 ## Quickstart
 
+> **Not published to npm.** FramePipe runs from source. There is no `framepipe` package on
+> the registry — install it by cloning and building.
+
 **Requirements:** Node.js 18+ and [FFmpeg](https://ffmpeg.org) 4.4+ installed on your system.
 
 ```bash
-npm install framepipe
+git clone https://github.com/connorl953/framepipe.git
+cd framepipe
+npm install
+npm run build
 ```
 
-Add to your MCP client config:
+Then point your MCP client at the built server by absolute path.
 
 **Claude Desktop** (`~/.config/Claude/claude_desktop_config.json`):
 ```json
 {
   "mcpServers": {
     "framepipe": {
-      "command": "npx",
-      "args": ["framepipe"]
+      "command": "node",
+      "args": ["/absolute/path/to/framepipe/dist/server.js"]
     }
   }
 }
@@ -43,26 +49,17 @@ Add to your MCP client config:
 {
   "mcpServers": {
     "framepipe": {
-      "command": "npx",
-      "args": ["framepipe"]
+      "command": "node",
+      "args": ["/absolute/path/to/framepipe/dist/server.js"]
     }
   }
 }
 ```
 
-**Cursor / Windsurf / any MCP client:**
-```json
-{
-  "mcpServers": {
-    "framepipe": {
-      "command": "npx",
-      "args": ["framepipe"]
-    }
-  }
-}
-```
+**Cursor / Windsurf / any MCP client:** same shape — `command: "node"`, with the absolute
+path to `dist/server.js` as the single argument.
 
-That's it. Your AI agent now has 17 video editing tools.
+Your agent then has 17 video editing tools.
 
 ## Why This Exists
 
